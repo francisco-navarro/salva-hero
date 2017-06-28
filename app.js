@@ -11,6 +11,7 @@ app.get('/item', (req, res) => {
 
   itemController.get(asin, store).then((result) => {
     console.log(result);
+    res.setHeader('Content-Type', 'application/json');
     res.json(result)
   });
 });
