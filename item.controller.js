@@ -1,6 +1,11 @@
 const cheerio = require('cheerio'); 
 const rp = require('request-promise');
 
+//SELECTORS
+const LIST_TABLE_COLUMN = '#olpOfferList [role="row"] .olpPriceColumn';
+const PRICE_CELL = '.olpOfferPrice';
+const IS_PRIME_CELL = '.supersaver';
+
 function get(asin, store){
   var options = {
     uri: `http://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
@@ -16,16 +21,23 @@ function get(asin, store){
 
   return rp(options)
     .then(function ($) {
-      var priceSection = $('#olpOfferList').attr('role', 'main').attr('role', 'row');
-      var prices = [];
-      priceSection.each((index, element) => {
-        prices.push($(element).find('.olpPriceColumn .olpOfferPrice'));
-      });
-      return prices.map(el => el.text().trim());
+      let prices = getPrices($);
+      return prices;
     })
     .catch(function (err) {
       console.warn(err);
     });
+}
+function getPrices($){
+  var priceSection = $(PRICE_TABLE_COLUMN);
+  var prices = priceSection.map((index, element) => ({
+    price: parsePrice($(element).find(PRIME_CELL).text()),
+    prime: !!$(element).find(IS_PRIME_CELL).length
+  }));
+  return prices;
+}
+function parsePrice(text){
+  text.replace(/EUR/,'').trim();
 }
 module.exports = {
   get: get
