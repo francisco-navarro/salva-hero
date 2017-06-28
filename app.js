@@ -9,5 +9,8 @@ app.get('/item', (req, res) => {
   let asin = req.query.asin;
   let store = req.query.store;
 
-  itemController.get(asin, store).then((result) => res.json(result));
+  itemController.get(asin, store).then((result) => {
+    console.log(result);
+    res.json(result)
+  });
 });

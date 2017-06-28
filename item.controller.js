@@ -29,15 +29,23 @@ function get(asin, store){
     });
 }
 function getPrices($){
-  var priceSection = $(PRICE_TABLE_COLUMN);
-  var prices = priceSection.map((index, element) => ({
-    price: parsePrice($(element).find(PRIME_CELL).text()),
-    prime: !!$(element).find(IS_PRIME_CELL).length
-  }));
+  var priceSection = $(LIST_TABLE_COLUMN);
+  var prices = [];
+  priceSection.map((index, element) => {
+      console.log($(element).find(PRICE_CELL).text())
+      console.log(!!$(element).find(IS_PRIME_CELL).length)
+      prices.push({
+        price: parsePrice($(element).find(PRICE_CELL).text()),
+        prime: !!$(element).find(IS_PRIME_CELL).length
+      });
+    }
+  );
   return prices;
 }
 function parsePrice(text){
-  text.replace(/EUR/,'').trim();
+  return parseFloat(
+    text.replace(/([0-9]+),([0-9]+)/,'$1.$2')
+  );
 }
 module.exports = {
   get: get
