@@ -64,7 +64,7 @@ function getPrices($){
   return prices;
 }
 function parsePrice(text){
-  return +text.replace(/.*?([0-9]+)([,\.])([0-9]+).*/,'$1$3');
+  return +text.replace(/[^0-9]/g,'');
 }
 module.exports = {
   get: get
