@@ -7,25 +7,29 @@ function init(){
   let jar = request.jar();
 
   function storeCookies(headers) {
-    headers['set-cookie'].forEach(strCookie => {
-      try{
-        console.log(strCookie);
-        let ck = Cookie.parse(strCookie);
-        let newCk = new Cookie({
-            // domain: 'www.amazon.es',
-            key: ck.name,
-            value: ck.value,
-            secure: ck.secure || false,
-            path: ck.path,
-            httpOnly: ck.httpOnly || false,
-            extensions: ck
-        });
-        jar.setCookie(newCk);
-      }catch(ex){
-        console.log(ex);
-        return;
-      }
-    });
+    try{
+      headers['set-cookie'].forEach(strCookie => {
+        try{
+          console.log(strCookie);
+          let ck = Cookie.parse(strCookie);
+          let newCk = new Cookie({
+              // domain: 'www.amazon.es',
+              key: ck.name,
+              value: ck.value,
+              secure: ck.secure || false,
+              path: ck.path,
+              httpOnly: ck.httpOnly || false,
+              extensions: ck
+          });
+          jar.setCookie(newCk);
+        }catch(ex){
+          console.log(ex);
+          return;
+        }
+      });
+    }catch(err){
+      console.error('error with cookies', err);
+    }
   }
 
   function renewCookies(){
