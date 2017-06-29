@@ -28,7 +28,13 @@ function get(asin, store){
       let prices = getPrices($);
       let price = Math.min.apply(null, prices.map(p => p.price));
       let prime = !!prices.find(p => p.prime);
-      let primePrice = Math.min.apply(null, prices.filter(p => p.prime).map(p => p.price));
+      let primePrice;
+      if(prime){
+        primePrice = Math.min.apply(null, prices.filter(p => p.prime).map(p => p.price));
+      }
+      if(prime && primePrice === price){
+        primePrice = undefined;
+      }
       return {
           asin,
           price,
