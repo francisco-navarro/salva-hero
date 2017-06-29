@@ -5,9 +5,15 @@ const app = express();
 var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 4001;
 var server_ip_address = process.env.HOST || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
-app.listen(server_port, server_ip_address, function() {
-  console.log('App listening on port ' + server_port);
-});
+if(process.env.OPENSHIFT_NODEJS_IP){
+  app.listen(server_port, server_ip_address, function() {
+    console.log('App listening on port ' + server_port);
+  });
+}else{
+    app.listen(server_port, function() {
+    console.log('App listening on port ' + server_port);
+  }); 
+}
 
 
 app.get('/info', (req, res) => {
