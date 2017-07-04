@@ -5,3 +5,6 @@
 
 'localhost:4001/item?asin=B01LSUYTJI&store=es'
 
+
+
+localhost:4001/item?asin=3869307889&store=es

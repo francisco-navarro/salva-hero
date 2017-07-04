@@ -43,7 +43,6 @@ function init(){
   }
   
   renewCookies();
-  setInterval(renewCookies, 120*1000);
 
   function get(){
     return jar;
