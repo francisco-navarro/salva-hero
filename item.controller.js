@@ -35,14 +35,15 @@ function get(asin, store){
       if(!!prices.find(p => !p.prime)) {
         price = Math.min.apply(null, prices.filter(p => !p.prime).map(p => p.price));
       }
-      return {
+      let result = {
           asin,
-          price,
           currency: 'EUR',
           prime,
-          primePrice,
           formattedPrice: price +' EUR'
         };
+      if(price) result.price = price;
+      if(primePrice) result.primePrice = primePrice;
+      return result;
     })
     .catch(function (err) {
       console.warn(err);
