@@ -11,7 +11,7 @@ const IS_PRIME_CELL = '.supersaver';
 function get(asin, store){
   var chrome = 'Chrome/59.0.1' + Date.now() % 100000 / 1000;
   var options = {
-    uri: `http://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
+    uri: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
       transform: function (body) {
           return cheerio.load(body);
       },
@@ -26,14 +26,14 @@ function get(asin, store){
   return rp(options)
     .then(function ($) {
       let prices = getPrices($);
-      let price = Math.min.apply(null, prices.map(p => p.price));
-      let prime = !!prices.find(p => p.prime);
       let primePrice;
+      let price;
+      let prime = !!prices.find(p => p.prime);
       if(prime){
-        primePrice = Math.min.apply(null, prices.filter(p => p.prime).map(p => p.price));
+        primePrice =  Math.min.apply(null, prices.filter(p => p.prime).map(p => p.price));
       }
-      if(prime && primePrice === price){
-        primePrice = undefined;
+      if(!!prices.find(p => !p.prime)) {
+        price = Math.min.apply(null, prices.filter(p => !p.prime).map(p => p.price));
       }
       return {
           asin,
