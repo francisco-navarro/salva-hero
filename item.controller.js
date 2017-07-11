@@ -26,8 +26,8 @@ function get(asin, store){
   return rp(options)
     .then(function ($) {
       let prices = getPrices($);
-      let primePrice;
-      let price;
+      let primePrice = null;
+      let price = null;
       let prime = !!prices.find(p => p.prime);
       if(prime){
         primePrice =  Math.min.apply(null, prices.filter(p => p.prime).map(p => p.price));
@@ -35,15 +35,14 @@ function get(asin, store){
       if(!!prices.find(p => !p.prime)) {
         price = Math.min.apply(null, prices.filter(p => !p.prime).map(p => p.price));
       }
-      let result = {
+      return {
           asin,
+          price,
           currency: 'EUR',
           prime,
+          primePrice,
           formattedPrice: price +' EUR'
         };
-      if(price) result.price = price;
-      if(primePrice) result.primePrice = primePrice;
-      return result;
     })
     .catch(function (err) {
       console.warn(err);
