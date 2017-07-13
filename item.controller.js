@@ -40,7 +40,8 @@ gettingProxies.once('end', function() {
 });
 
 function get(asin, store){
-  
+  count = (count+1)%proxyList.length;
+
   var chrome = 'Chrome/59.0.1' + Date.now() % 100000 / 1000;
   var options = {
     uri: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
@@ -56,8 +57,8 @@ function get(asin, store){
         'Pragma': 'no-cache',
         
       },
-      host: '41.186.24.69',
-      port: 3128,
+      host: proxyList[count].ipAddress,
+      port:  proxyList[count].port,
       jar: fakeCookie.get()
   };
   lastPetition = new Date();
