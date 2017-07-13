@@ -36,7 +36,7 @@ gettingProxies.on('error', function(error) {
 });
 
 gettingProxies.once('end', function() {
-	console.log('end proxies total '+proxyList.length);
+	console.log('>>>>>>>> proxies total '+proxyList.length);
 });
 
 function get(asin, store){
@@ -57,6 +57,7 @@ function get(asin, store){
         'Pragma': 'no-cache',
         
       },
+      proxy:  proxyList[count].ipAddress+':'+proxyList[count].port,
       host: proxyList[count].ipAddress,
       port:  proxyList[count].port,
       jar: fakeCookie.get()
