@@ -8,31 +8,39 @@ let lastPetition;
 let lastOk;
 let lastItem;
 let uptime = new Date();
+let count = 0;
 
 //SELECTORS
 const LIST_TABLE_COLUMN = '#olpOfferList [role="row"] .olpPriceColumn';
 const PRICE_CELL = '.olpOfferPrice';
 const IS_PRIME_CELL = '.supersaver';
 
-let gettingProxies = ProxyLists.getProxies();
+let gettingProxies = ProxyLists.getProxies({protocols: ['http']});
+let proxyList = [{ 
+     ipAddress: '46.38.52.36',
+     port: 8081,
+     protocols: [ 'http' ],
+     anonymityLevel: 'elite',
+     source: 'freeproxylists',
+     country: 'ru' }
+    ];
 
 gettingProxies.on('data', function(proxies) {
   if(proxies.length){
-	  console.log(proxies);
+	  proxies.map(el => proxyList.push(el));
   }
 });
 
 gettingProxies.on('error', function(error) {
-	// Some error has occurred.
 	console.error(error);
 });
 
 gettingProxies.once('end', function() {
-	console.log('end proxy list');
+	console.log('end proxies total '+proxyList.length);
 });
 
 function get(asin, store){
-
+  
   var chrome = 'Chrome/59.0.1' + Date.now() % 100000 / 1000;
   var options = {
     uri: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
