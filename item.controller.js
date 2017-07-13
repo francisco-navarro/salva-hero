@@ -3,6 +3,7 @@ const rp = require('request-promise');
 const request = require('request').defaults({jar: true});
 const fakeCookie = require('./fake.cookies')();
 const ProxyLists = require('proxy-lists');
+const http = require("http");
 
 let lastPetition;
 let lastOk;
@@ -17,22 +18,43 @@ const IS_PRIME_CELL = '.supersaver';
 
 let gettingProxies = ProxyLists.getProxies({protocols: ['http']});
 let proxyList = [{ 
-     ipAddress: '46.38.52.36',
-     port: 8081,
+     ipAddress: '104.236.238.10',
+     port: 3128,
      protocols: [ 'http' ],
      anonymityLevel: 'elite',
      source: 'freeproxylists',
-     country: 'ru' }
+     country: 'us' }
     ];
 
 gettingProxies.on('data', function(proxies) {
   if(proxies.length){
-	  proxies.map(el => proxyList.push(el));
+	  proxies.map(el => {
+        var options = {
+          host: el.ipAddress,
+          port: el.port,
+          path: "http://www.amazon.es",
+          headers: {
+            Host: "www.amazon.es"
+          }
+        };
+        var date1 = Date.now();
+        http.get(options, function(res) {
+          if(res.statusCode === 200){
+            proxyList.push(el);
+            //Compruebo que este mas próximo de 15000ms
+            if((Date.now() - date1)<18000){
+              console.log('>>>>>>>> proxies total '+proxyList.length)
+            }
+          }
+        }).on('error', function(e) {
+            //console.log("Got error: " + e.message);
+        });
+    });
   }
 });
 
 gettingProxies.on('error', function(error) {
-	console.error(error);
+	console.warn(error);
 });
 
 gettingProxies.once('end', function() {
@@ -57,9 +79,6 @@ function get(asin, store){
         'Pragma': 'no-cache',
         
       },
-      proxy:  proxyList[count].ipAddress+':'+proxyList[count].port,
-      host: proxyList[count].ipAddress,
-      port:  proxyList[count].port,
       jar: fakeCookie.get()
   };
   lastPetition = new Date();
