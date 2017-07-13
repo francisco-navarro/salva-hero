@@ -5,6 +5,7 @@ var Cookie = ToughCookie.Cookie;
 
 function init(){
   let jar = request.jar();
+  let count = 0;
 
   function storeCookies(headers) {
     try{
@@ -45,6 +46,10 @@ function init(){
   renewCookies();
 
   function get(){
+    count = count+1%10;
+    if(!count){
+      renewCookies()
+    }
     return jar;
   }
 
