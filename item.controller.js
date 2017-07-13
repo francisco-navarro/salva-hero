@@ -1,6 +1,5 @@
 const cheerio = require('cheerio'); 
 const rp = require('request-promise');
-require('request-debug')(rp);
 const request = require('request').defaults({jar: true});
 const fakeCookie = require('./fake.cookies')();
 
