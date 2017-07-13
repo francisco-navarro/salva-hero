@@ -40,12 +40,14 @@ function get(asin, store){
       if(!!prices.find(p => !p.prime)) {
         price = Math.min.apply(null, prices.filter(p => !p.prime).map(p => p.price));
       }
-      lastOk = new Date();
-      lastItem = {
-        asin,
-        price,
-        primePrice
-      };
+      if(price || primePrice){
+        lastOk = new Date();
+        lastItem = {
+          asin,
+          price,
+          primePrice
+        };
+      }
       return {
           asin,
           price,
