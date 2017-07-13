@@ -1,5 +1,6 @@
 const cheerio = require('cheerio'); 
 const rp = require('request-promise');
+require('request-debug')(rp);
 const request = require('request').defaults({jar: true});
 const fakeCookie = require('./fake.cookies')();
 
@@ -26,7 +27,8 @@ function get(asin, store){
       headers: {
         'Referer': 'https://www.amazon.es/s/ref=nb_sb_noss?__mk_es_ES=' + salt()+'&url=search-alias%3Daps&qid=' + Math.floor(Date.now()/1000) +'&field-keywords=iphone' +asin,
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) '+chrome+' Safari/537.36',
-        'Pragma': 'no-cache'
+        'Pragma': 'no-cache',
+        
       },
       jar: fakeCookie.get()
   };
