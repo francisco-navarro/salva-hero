@@ -6,6 +6,7 @@ const fakeCookie = require('./fake.cookies')();
 let lastPetition;
 let lastOk;
 let lastItem;
+let uptime = new Date();
 
 //SELECTORS
 const LIST_TABLE_COLUMN = '#olpOfferList [role="row"] .olpPriceColumn';
@@ -16,7 +17,10 @@ function get(asin, store){
   var chrome = 'Chrome/59.0.1' + Date.now() % 100000 / 1000;
   var options = {
     uri: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
-      transform: function (body) {
+      transform: function (body, res) {
+          if(res.statusCode !== 200){
+            console.warn(res.statusMessage);
+          }
           return cheerio.load(body);
       },
       headers: {
@@ -81,6 +85,7 @@ function parsePrice(text){
 }
 function status() {
   return {
+    uptime,
     lastPetition,
     lastOk,
     lastItem
