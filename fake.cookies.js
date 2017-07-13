@@ -14,7 +14,7 @@ function init(){
           console.log(strCookie);
           let ck = Cookie.parse(strCookie);
           let newCk = new Cookie({
-              domain: ck.domain,
+              // domain: ck.domain,
               key: ck.name,
               value: ck.value,
               secure: ck.secure || false,
