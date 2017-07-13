@@ -46,7 +46,7 @@ function init(){
   renewCookies();
 
   function get(){
-    count = count+1%10;
+    count = (count+1)%10;
     if(!count){
       renewCookies()
     }
