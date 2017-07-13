@@ -2,6 +2,7 @@ const cheerio = require('cheerio');
 const rp = require('request-promise');
 const request = require('request').defaults({jar: true});
 const fakeCookie = require('./fake.cookies')();
+const ProxyLists = require('proxy-lists');
 
 let lastPetition;
 let lastOk;
@@ -13,7 +14,25 @@ const LIST_TABLE_COLUMN = '#olpOfferList [role="row"] .olpPriceColumn';
 const PRICE_CELL = '.olpOfferPrice';
 const IS_PRIME_CELL = '.supersaver';
 
+let gettingProxies = ProxyLists.getProxies();
+
+gettingProxies.on('data', function(proxies) {
+  if(proxies.length){
+	  console.log(proxies);
+  }
+});
+
+gettingProxies.on('error', function(error) {
+	// Some error has occurred.
+	console.error(error);
+});
+
+gettingProxies.once('end', function() {
+	console.log('end proxy list');
+});
+
 function get(asin, store){
+
   var chrome = 'Chrome/59.0.1' + Date.now() % 100000 / 1000;
   var options = {
     uri: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
@@ -29,6 +48,8 @@ function get(asin, store){
         'Pragma': 'no-cache',
         
       },
+      host: '41.186.24.69',
+      port: 3128,
       jar: fakeCookie.get()
   };
   lastPetition = new Date();
