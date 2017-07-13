@@ -3,6 +3,10 @@ const rp = require('request-promise');
 const request = require('request').defaults({jar: true});
 const fakeCookie = require('./fake.cookies')();
 
+let lastPetition;
+let lastOk;
+let lastItem;
+
 //SELECTORS
 const LIST_TABLE_COLUMN = '#olpOfferList [role="row"] .olpPriceColumn';
 const PRICE_CELL = '.olpOfferPrice';
@@ -22,6 +26,7 @@ function get(asin, store){
       },
       jar: fakeCookie.get()
   };
+  lastPetition = new Date();
 
   return rp(options)
     .then(function ($) {
@@ -35,6 +40,12 @@ function get(asin, store){
       if(!!prices.find(p => !p.prime)) {
         price = Math.min.apply(null, prices.filter(p => !p.prime).map(p => p.price));
       }
+      lastOk = new Date();
+      lastItem = {
+        asin,
+        price,
+        primePrice
+      };
       return {
           asin,
           price,
@@ -66,6 +77,14 @@ function getPrices($){
 function parsePrice(text){
   return +text.replace(/[^0-9]/g,'');
 }
+function status() {
+  return {
+    lastPetition,
+    lastOk,
+    lastItem
+  };
+}
 module.exports = {
-  get: get
+  get: get,
+  status: status
 };
