@@ -71,7 +71,7 @@ function get(asin, store) {
   var body = '';
   var chrome = 'Chrome/59.0.1' + Date.now() % 100000 / 1000;
   var options = {
-    // uri: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
+    uri: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
     path: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
     // transform: function (body, res) {
     //   if (res.statusCode !== 200) {
