@@ -21,14 +21,7 @@ const IS_PRIME_CELL = '.supersaver';
 let gettingProxies = ProxyLists.getProxies({
   protocols: ['http']
 });
-let proxyList = [{
-  ipAddress: '104.236.238.10',
-  port: 3128,
-  protocols: ['http'],
-  anonymityLevel: 'elite',
-  source: 'freeproxylists',
-  country: 'us'
-}];
+let proxyList = [];
 
 gettingProxies.on('data', function (proxies) {
   if (proxies.length) {
@@ -79,7 +72,7 @@ function get(asin, store) {
   var chrome = 'Chrome/59.0.1' + Date.now() % 100000 / 1000;
   var options = {
     // uri: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
-    path: `www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
+    path: `https://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
     // transform: function (body, res) {
     //   if (res.statusCode !== 200) {
     //     console.warn(res.statusMessage);
