@@ -18,11 +18,19 @@ gettingProxies.on('data', function(proxies) {
         var date1 = Date.now();
         http.get(options, function(res) {
           if(res.statusCode === 200){
-            proxyList.push(el);
-            //Compruebo que este mas próximo de 15000ms
-            if((Date.now() - date1)<18000){
-              console.log('>>>>>>>> proxies total '+proxyList.length)
-            }
+            var body = '';
+            res.on('data', data => {
+              body += data;
+            });
+            res.on('end', () => {
+              if(body.match('body')){
+                proxyList.push(el);
+                //Compruebo que este mas próximo de 15000ms
+                if((Date.now() - date1)<18000){
+                  console.log('>>>>>>>> proxies total '+proxyList.length)
+                }
+              }
+            });
           }
         }).on('error', function(e) {
             //console.log("Got error: " + e.message);
