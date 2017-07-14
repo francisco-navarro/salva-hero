@@ -16,7 +16,7 @@ if(process.env.OPENSHIFT_NODEJS_IP){
 }
 
 
-app.get('/info', (req, res) => {
+app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'application/json');
     res.json(itemController.status());
 });
