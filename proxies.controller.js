@@ -1,7 +1,7 @@
 const ProxyLists = require('proxy-lists');
 const http = require("http");
 
-const MAX_TIMEOUT_PROXY = 18000;
+const MAX_TIMEOUT_PROXY = 13000;
 
 let proxyList = [];
 let count = 0;
