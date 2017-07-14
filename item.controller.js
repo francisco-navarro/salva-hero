@@ -50,6 +50,7 @@ function get(asin, store) {
           resolve(
             parseResponse(cheerio.load(body)));
         } catch (err) {
+          console.warn('Error on proxy '+ proxy);
           reject(err);
         }
       });
