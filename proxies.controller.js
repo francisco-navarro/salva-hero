@@ -4,7 +4,7 @@ const http = require("http");
 const MAX_TIMEOUT_PROXY = 8000;
 
 const options = {
-  protocols: ['http'],
+  protocols: ['https', 'http'],
   bitproxies: {
     apiKey: ''
   }
