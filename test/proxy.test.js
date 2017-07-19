@@ -24,9 +24,10 @@ gettingProxies.on('data', function(proxies) {
             });
             res.on('end', () => {
               if(body.match('body')){
-                proxyList.push(el);
                 //Compruebo que este mas próximo de 15000ms
-                if((Date.now() - date1)<18000){
+                if((Date.now() - date1)<15000){
+                  proxyList.push(el);
+                  console.log(el);
                   console.log('>>>>>>>> proxies total '+proxyList.length)
                 }
               }

@@ -16,3 +16,5 @@ http://www.amazon.es/gp/offer-listing/3869307889/ref=dp_olp_new_mbc?ie=UTF8&cond
 Prime mas caro: localhost:4001/item?asin=B01LW91FT3&store=es
 No tiene prime: B00NP3WXMC
 Mas barato el no prime: B00GV87MEW
+
+Satechi: B06XRVX3XM  http://localhost:4001/item?asin=B06XRVX3XM&store=es

@@ -24,7 +24,7 @@ app.get('/', (req, res) => {
 app.get('/item', (req, res) => {
   res.setHeader('Content-Type', 'application/json');
   let asin = req.query.asin;
-  let store = req.query.store;
+  let store = req.query.store || 'es';
 
   itemController.get(asin, store).then((result) => {
     console.log(result);

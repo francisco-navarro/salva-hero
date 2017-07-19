@@ -30,9 +30,9 @@ function pool() {
             });
             res.on('end', () => {
               if (body.match('body') && body.match(/amazon/) && !body.match(/Captcha/)) {
-                proxyList.push(el);
                 //Compruebo que este mas próximo de 15000ms
                 if ((Date.now() - date1) < MAX_TIMEOUT_PROXY) {
+                  proxyList.push(el);
                   console.log('>>>>>>>> proxies total ' + proxyList.length)
                 }
               }
