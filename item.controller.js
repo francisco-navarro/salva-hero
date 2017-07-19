@@ -4,19 +4,16 @@ const request = require('request').defaults({
   jar: true
 });
 const fakeCookie = require('./fake.cookies')();
+const itemParser = require('./item.parser');
 const proxiesController = require('./proxies.controller');
 const ProxyLists = require('proxy-lists');
 const http = require("http");
+const https = require("https");
 
 let lastPetition;
 let lastOk;
 let lastItem;
 let uptime = new Date();
-
-//SELECTORS
-const LIST_TABLE_COLUMN = '#olpOfferList [role="row"] .olpPriceColumn';
-const PRICE_CELL = '.olpOfferPrice';
-const IS_PRIME_CELL = '.supersaver';
 
 function get(asin, store) {
   return new Promise((resolve, reject) =>  {
@@ -48,9 +45,9 @@ function get(asin, store) {
       res.on('end', () => {
         try {
           resolve(
-            parseResponse(cheerio.load(body)));
+            itemParser.get(asin, cheerio.load(body)));
         } catch (err) {
-          console.warn('Error on proxy '+ proxy);
+          console.warn('Error on proxy '+ proxy || err);
           reject(err);
         }
       });
@@ -58,52 +55,6 @@ function get(asin, store) {
       reject("Got error: " + e.message);
     })
   });
-
-
-  function parseResponse($) {
-    let prices = getPrices($);
-    let primePrice = null;
-    let price = null;
-    let prime = !!prices.find(p => p.prime);
-    if (prime) {
-      primePrice = Math.min.apply(null, prices.filter(p => p.prime).map(p => p.price));
-    }
-    if (!!prices.find(p => !p.prime)) {
-      price = Math.min.apply(null, prices.filter(p => !p.prime).map(p => p.price));
-    }
-    if (price || primePrice) {
-      lastOk = new Date();
-      lastItem = {
-        asin,
-        price,
-        primePrice
-      };
-    }
-    return {
-      asin,
-      price,
-      currency: 'EUR',
-      prime,
-      primePrice,
-      formattedPrice: price + ' EUR'
-    };
-  }
-}
-
-function getPrices($) {
-  var priceSection = $(LIST_TABLE_COLUMN);
-  var prices = [];
-  priceSection.map((index, element) =>
-    prices.push({
-      price: parsePrice($(element).find(PRICE_CELL).text()),
-      prime: !!$(element).find(IS_PRIME_CELL).length
-    })
-  );
-  return prices;
-}
-
-function parsePrice(text) {
-  return +text.replace(/[^0-9]/g, '');
 }
 
 function salt() {

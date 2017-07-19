@@ -3,11 +3,18 @@ const http = require("http");
 
 const MAX_TIMEOUT_PROXY = 8000;
 
+const options = {
+  protocols: ['http'],
+  bitproxies: {
+    apiKey: ''
+  }
+};
+
 let proxyList = [];
 let count = 0;
 
 function pool() {
-  let gettingProxies = ProxyLists.getProxies();
+  let gettingProxies = ProxyLists.getProxies(options);
   proxyList = [];
 
   gettingProxies.on('data', function (proxies) {
