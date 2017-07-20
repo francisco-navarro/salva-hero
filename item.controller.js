@@ -44,17 +44,49 @@ function get(asin, store) {
       });
       res.on('end', () => {
         try {
-          resolve(
-            itemParser.get(asin, cheerio.load(body)));
+          let item = itemParser.get(asin, cheerio.load(body));
+          if (item.price || item.primePrice){
+            lastOk = new Date();
+            resolve(item);
+          } else {
+            getLocal(asin, store).then(resp => {
+              lastOk = new Date();
+              resolve(resp)
+            });
+          }
         } catch (err) {
           console.warn('Error on proxy '+ proxy || err);
           reject(err);
         }
       });
     }).on('error', e => {
-      reject("Got error: " + e.message);
+      getLocal(asin, store)
+        .then(resp => {
+              resolve(resp);
+        }).catch((err) => reject("Got error: " + err));
     })
   });
+}
+
+function getLocal(asin, store) {
+  var chrome = 'Chrome/59.0.1' + Date.now() % 100000 / 1000;
+  var options = {
+      uri: `http://www.amazon.${store}/gp/offer-listing/${asin}/ref=dp_olp_new_mbc?ie=UTF8&condition=new`,
+      headers: {
+        'Referer': 'https://www.amazon.es/s/ref=nb_sb_noss?__mk_es_ES=' + salt() + '&url=search-alias%3Daps&qid=' + Math.floor(Date.now() / 1000) + '&field-keywords=iphone' + asin,
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_4) AppleWebKit/537.36 (KHTML, like Gecko) ' + chrome + ' Safari/537.36',
+        'Pragma': 'no-cache',
+        'host': 'www.amazon.es'
+      },
+      jar: fakeCookie.get(),
+      transform: function (body) {
+        return cheerio.load(body);
+      }
+    };
+  return rp(options)
+    .then(function ($) {
+      return itemParser.get(asin, $);
+    });
 }
 
 function salt() {

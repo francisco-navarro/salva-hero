@@ -1,7 +1,7 @@
 const ProxyLists = require('proxy-lists');
 const http = require("http");
 
-const MAX_TIMEOUT_PROXY = 8000;
+const MAX_TIMEOUT_PROXY = 12000;
 
 const options = {
   protocols: ['http'],
@@ -67,7 +67,7 @@ setInterval(pool, 60*60*1000);
 
 function nextProxy(){
     count = ((count || 0) + 1) % proxyList.length;
-    return proxyList[count];
+    return proxyList[count] || {};
 }
 
 module.exports = {

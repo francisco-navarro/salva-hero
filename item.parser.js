@@ -15,7 +15,6 @@ function parseResponse(asin, $) {
     price = Math.min.apply(null, prices.filter(p => !p.prime).map(p => p.price));
   }
   if (price || primePrice) {
-    lastOk = new Date();
     lastItem = {
       asin,
       price,
