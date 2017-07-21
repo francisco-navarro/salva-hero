@@ -12,6 +12,7 @@
   const https = require("https");
 
   let lastPetition;
+  let lastPetitionLocal = new Date();
   let lastOk;
   let lastItem;
   let uptime = new Date();
@@ -84,13 +85,18 @@
           return cheerio.load(body);
         }
       };
-    console.warn('Getting from local...');
-    return rp(options)
-      .then(function ($) {
-        let item =  itemParser.get(asin, $);
-        if(item.price || item.primePrice ) console.log('... OK');
-        return item;
-      });
+    if (new Date() - lastPetitionLocal > 1500) {
+      console.warn('Getting from local since '+(new Date() - lastPetitionLocal)+'ms >>>');
+      lastPetitionLocal = new Date();
+      return rp(options)
+        .then(function ($) {
+          let item =  itemParser.get(asin, $);
+          if(item.price || item.primePrice ) console.log('>>>> OK!');
+          return item;
+        });
+    } else {
+      return Promise.resolve({asin: asin});
+    }
   }
 
   function salt() {
