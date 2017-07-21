@@ -27,7 +27,7 @@ app.get('/item', (req, res) => {
   let store = req.query.store || 'es';
 
   itemController.get(asin, store).then((result) => {
-    console.log(result);
+    console.log(`${result.asin}: ${result.price} - ${result.primePrice}`);
     res.setHeader('Content-Type', 'application/json');
     res.json(result)
   });

@@ -64,7 +64,7 @@
 
   pool();
 
-  setInterval(pool, 60*60*1000);
+  setInterval(pool, 4*60*60*1000);
 
   function nextProxy(){
       count = ((count || 0) + 1) % proxyList.length;

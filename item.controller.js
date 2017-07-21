@@ -84,7 +84,7 @@
           return cheerio.load(body);
         }
       };
-    console.log('Getting from local...');
+    console.warn('Getting from local...');
     return rp(options)
       .then(function ($) {
         let item =  itemParser.get(asin, $);
