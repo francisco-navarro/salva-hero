@@ -85,7 +85,7 @@
           return cheerio.load(body);
         }
       };
-    if (new Date() - lastPetitionLocal > 1500) {
+    if (new Date() - lastPetitionLocal > 10000) {
       console.warn('Getting from local since '+(new Date() - lastPetitionLocal)+'ms >>>');
       lastPetitionLocal = new Date();
       return rp(options)
