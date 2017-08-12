@@ -32,3 +32,8 @@ app.get('/item', (req, res) => {
     res.json(result)
   });
 });
+
+app.get('/proxies', (req, res) => {
+  itemController.resetProxies();
+  res.json(itemController.status());
+});

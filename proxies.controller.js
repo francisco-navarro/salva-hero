@@ -76,6 +76,7 @@
   }
   module.exports = {
     nextProxy,
-    info
+    info,
+    pool
   }
 })();

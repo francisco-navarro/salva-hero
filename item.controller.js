@@ -113,8 +113,14 @@
       proxies: proxiesController.info()
     };
   }
+
+  function resetProxies() {
+    proxiesController.pool();
+  }
+
   module.exports = {
     get: get,
-    status: status
+    status: status,
+    resetProxies: resetProxies
   };
 })();
