@@ -64,14 +64,18 @@
 
   pool();
 
-  setInterval(pool, 4*60*60*1000);
-
   function nextProxy(){
       count = ((count || 0) + 1) % proxyList.length;
       return proxyList[count] || {};
   }
 
+  function info() {
+    return {
+      proxyCount:  proxyList.length
+    }
+  }
   module.exports = {
-    nextProxy
+    nextProxy,
+    info
   }
 })();

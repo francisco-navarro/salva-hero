@@ -46,10 +46,6 @@ function init(){
   renewCookies();
 
   function get(){
-    count = (count+1)%1200;
-    if(!count){
-      renewCookies()
-    }
     return jar;
   }
 

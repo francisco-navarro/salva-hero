@@ -109,7 +109,8 @@
       uptime,
       lastPetition,
       lastOk,
-      lastItem
+      lastItem,
+      proxies: proxiesController.info()
     };
   }
   module.exports = {
