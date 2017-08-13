@@ -2,7 +2,7 @@
   const ProxyLists = require('proxy-lists');
   const http = require("http");
 
-  const MAX_TIMEOUT_PROXY = 12000;
+  const MAX_TIMEOUT_PROXY = 5000;
 
   const options = {
     protocols: ['https', 'http'],
