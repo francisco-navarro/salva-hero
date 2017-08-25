@@ -2,7 +2,7 @@ const express = require('express');
 const itemController = require('./item.controller');
 const app = express();
 
-var server_port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 4001;
+var server_port = process.env.port || process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 4001;
 var server_ip_address = process.env.HOST || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 
 if(process.env.OPENSHIFT_NODEJS_IP){
